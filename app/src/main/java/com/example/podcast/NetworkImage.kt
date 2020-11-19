@@ -43,12 +43,13 @@ private fun loadImage(url: String): ImageAsset? {
 fun NetworkImage(
     url: String,
     modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Crop,
     placeholder: @Composable (modifier: Modifier) -> Unit
 ) {
     val image = loadImage(url);
 
     if (image != null) {
-        Image(modifier = modifier, asset = image, contentScale = ContentScale.Crop)
+        Image(modifier = modifier, asset = image, contentScale = contentScale)
     } else {
         placeholder(modifier)
     }

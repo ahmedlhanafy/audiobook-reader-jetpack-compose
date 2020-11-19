@@ -3,27 +3,34 @@ package com.example.podcast
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.animate
+import androidx.compose.foundation.Icon
+import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.onCommit
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.WithConstraints
+import androidx.compose.ui.draw.drawOpacity
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.platform.setContent
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.ui.tooling.preview.Preview
 import com.example.podcast.ui.PodcastTheme
 
@@ -33,7 +40,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PodcastTheme {
-                MainScreen()
+                Box {
+                    YoutubePlayer()
+                }
+
             }
         }
     }
@@ -51,14 +61,9 @@ fun StatusBar(color: Color) {
     }
 }
 
-@Composable
-fun SecondScreen() {
-
-}
 
 @Composable
 fun MainScreen() {
-    StatusBar(Color.Black)
     WithConstraints {
         val screenHeight = with(DensityAmbient.current) { constraints.maxHeight.toDp() }
         val yOffset = remember { mutableStateOf(0.dp) }
