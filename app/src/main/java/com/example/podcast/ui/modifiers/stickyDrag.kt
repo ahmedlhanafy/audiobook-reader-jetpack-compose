@@ -1,6 +1,7 @@
-package com.example.podcast
+package com.example.podcast.ui.modifiers
 
 import androidx.compose.animation.animate
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
@@ -12,10 +13,18 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlin.math.abs
 
 
-class StickyDraggingConfig(private val initialOffset: Dp = 0.dp, private val maxSize: Dp) {
+class StickyDraggingConfig(
+    private val initiallyExpanded: Boolean,
+    private val minSize: Dp = 0.dp,
+    private val maxSize: Dp,
+) {
+    private val initialOffset: Dp = if (initiallyExpanded) maxSize else minSize
+
     private var _offset by mutableStateOf(initialOffset)
+    private var originalOffset: Dp? = null;
 
     var isDragging by mutableStateOf(false)
         private set
@@ -24,7 +33,7 @@ class StickyDraggingConfig(private val initialOffset: Dp = 0.dp, private val max
 
     @Composable
     val offset
-        get() = animate(_offset)
+        get() = animate(_offset, )
 
     @Composable
     val progress
@@ -33,32 +42,45 @@ class StickyDraggingConfig(private val initialOffset: Dp = 0.dp, private val max
 
     internal fun onDragStart(startedPosition: Offset) {
         isDragging = true
+        originalOffset = _offset
     }
 
     fun onDrag(distance: Dp) {
         val newVal = _offset + distance
 
-        if (newVal in initialOffset..maxSize) {
+
+        if (newVal in minSize..maxSize) {
             _offset = newVal
         }
     }
 
     fun onDragEnd(velocity: Float) {
         val progress = _offset / maxSize
-
         isDragging = false
 
-
-
-        _offset = if (progress > 0.5f || (velocity < -5000 && isExpanded)) {
-            maxSize
+        _offset = if (abs(velocity) > 200) {
+            if (originalOffset == maxSize) {
+                minSize
+            } else {
+                maxSize
+            }
         } else {
-            initialOffset
+            if (progress > 0.5f) {
+                maxSize
+            } else {
+                minSize
+            }
         }
+
+        originalOffset = null
+    }
+
+    fun expand() {
+        _offset = if (this.initiallyExpanded) minSize else maxSize
     }
 
     fun reset() {
-        _offset = 0.dp
+        _offset = initialOffset
     }
 }
 
@@ -69,7 +91,5 @@ fun Modifier.stickyDrag(config: StickyDraggingConfig): Modifier {
             orientation = Orientation.Vertical,
             onDragStarted = config::onDragStart,
             onDragStopped = config::onDragEnd,
-        ) {
-            config.onDrag(it.toDp())
-        }
+        ) { config.onDrag(it.toDp()) }
 }

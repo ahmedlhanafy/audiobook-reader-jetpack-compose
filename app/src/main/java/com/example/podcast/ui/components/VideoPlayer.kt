@@ -1,8 +1,9 @@
-package com.example.podcast
+package com.example.podcast.ui.components
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.onCommit
+import androidx.compose.runtime.onDispose
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ContextAmbient
@@ -17,10 +18,8 @@ import com.google.android.exoplayer2.util.Util
 
 @Composable
 fun VideoPlayer(modifier: Modifier, url: String, isPlaying: Boolean = true, seek: Float = 0f) {
-    // This is the official way to access current context from Composable functions
     val context = ContextAmbient.current
 
-    // Do not recreate the player everytime this Composable commits
     val exoPlayer = remember {
         SimpleExoPlayer.Builder(context).build()
     }
@@ -47,6 +46,10 @@ fun VideoPlayer(modifier: Modifier, url: String, isPlaying: Boolean = true, seek
 
     onCommit(seek) {
         exoPlayer.seekTo((exoPlayer.duration * seek.toLong()))
+    }
+
+    onDispose {
+        exoPlayer.release()
     }
 
     AndroidView({

@@ -1,4 +1,4 @@
-package com.example.podcast
+package com.example.podcast.helpers
 
 
 fun interpolate(
@@ -25,29 +25,4 @@ private operator fun <T : Comparable<T>> ClosedFloatingPointRange<T>.component1(
 
 private operator fun <T : Comparable<T>> ClosedFloatingPointRange<T>.component2(): T {
     return this.endInclusive
-}
-
-fun interpolate(
-    value: Float,
-    inputRange: List<Float>,
-    outputRange: List<Float>,
-): Float {
-    val rangeIndex = findRangeIndex(value, inputRange)
-
-    return interpolate(
-        value,
-        inputRange[rangeIndex]..inputRange[rangeIndex + 1],
-        outputRange[rangeIndex]..outputRange[rangeIndex + 1],
-    )
-}
-
-private fun findRangeIndex(value: Float, ranges: List<Float>): Int {
-    var index = 1
-    while (index < ranges.size - 1) {
-        if (ranges[index] >= value) {
-            break
-        }
-        index++
-    }
-    return index - 1
 }

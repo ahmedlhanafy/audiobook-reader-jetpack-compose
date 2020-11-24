@@ -1,4 +1,4 @@
-package com.example.podcast.ui
+package com.example.podcast.ui.styles
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

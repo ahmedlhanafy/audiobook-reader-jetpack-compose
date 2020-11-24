@@ -1,6 +1,7 @@
-package com.example.podcast
+package com.example.podcast.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.launchInComposition
 import androidx.compose.runtime.mutableStateOf
@@ -44,7 +45,7 @@ fun NetworkImage(
     url: String,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Crop,
-    placeholder: @Composable (modifier: Modifier) -> Unit
+    placeholder: @Composable (modifier: Modifier) -> Unit = { Box(it) }
 ) {
     val image = loadImage(url);
 

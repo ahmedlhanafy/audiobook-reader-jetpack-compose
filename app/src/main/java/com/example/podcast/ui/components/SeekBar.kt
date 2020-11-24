@@ -1,6 +1,5 @@
-package com.example.podcast
+package com.example.podcast.ui.components
 
-import android.util.Log
 import androidx.compose.animation.animate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,7 +20,7 @@ import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import com.example.podcast.ui.PodcastTheme
+import com.example.podcast.ui.styles.PodcastTheme
 
 val MAX_KNOB_HEIGHT = 20.dp
 val KNOB_BORDER = 2.dp
